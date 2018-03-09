@@ -3,5 +3,8 @@
 
 #include "node.hpp"
 #include "graph.hpp"
+#include "path.hpp"
+
+#include "a_star_exception.hpp"
 
 #endif

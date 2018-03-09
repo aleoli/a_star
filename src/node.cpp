@@ -16,9 +16,25 @@ vector<Connection> Node::get_neighbors() const {
 	return this->neighbors;
 }
 
-void Node::add_neighbor(Node node, float weight) {
+void Node::add_neighbor(int node_id, float weight) {
 	Connection con;
-	con.id = node.id;
+	con.to = node_id;
 	con.weight = weight;
 	this->neighbors.push_back(con);
+}
+
+int Node::getId() const {
+	return this->id;
+}
+
+float Node::getX() const {
+	return this->position.x;
+}
+
+float Node::getY() const {
+	return this->position.y;
+}
+
+bool Node::operator== (Node &n) const {
+	return (this->position.x == n.position.x && this->position.y == n.position.y);
 }

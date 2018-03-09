@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 using std::cout;
 using std::endl;
@@ -30,6 +31,9 @@ namespace a_star {
 	
 	class Node;
 	class Graph;
+	class Path;
+	
+	class A_star_exception;
 	
 }
 

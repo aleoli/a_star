@@ -11,8 +11,14 @@ namespace a_star {
 		Node(int id, float cost, Point position);
 		~Node();
 		
-		void add_neighbor(Node node, float weight);
+		void add_neighbor(int node_id, float weight);
 		vector<Connection> get_neighbors() const;
+		
+		int getId() const;
+		float getX() const;
+		float getY() const;
+		
+		bool operator== (Node &n) const;
 		
 	private:
 		int id;

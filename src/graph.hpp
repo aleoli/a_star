@@ -1,7 +1,10 @@
 #ifndef graph_hpp
 #define graph_hpp
 
-#include "dependencies.hpp"
+#include "a_star_dependencies.hpp"
+
+#include "node.hpp"
+using a_star::Node;
 
 namespace a_star {
 	
@@ -10,6 +13,9 @@ namespace a_star {
 	public:
 		Graph(vector<Node *> nodes, vector<Link> links);
 		~Graph();
+		
+		float get_cost(int from, int to) const;
+		vector<Node *> get_neighbors(int node_id);
 		
 	private:
 		map<int, Node *> nodes;
