@@ -35,6 +35,14 @@ float Node::getY() const {
 	return this->position.y;
 }
 
+string Node::to_string() const {
+	return "id: "+std::to_string(this->id)+"\tx: "+std::to_string(this->position.x)+"\ty: "+std::to_string(this->position.y);
+}
+
 bool Node::operator== (Node &n) const {
 	return (this->position.x == n.position.x && this->position.y == n.position.y);
+}
+
+bool Node::operator!= (Node &n) const {
+	return !((*this)==n);
 }

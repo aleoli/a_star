@@ -16,6 +16,11 @@ Graph::Graph(vector<Node *> nodes, vector<Link> links) {
 			throw A_star_exception("Node not found for id "+std::to_string(it->from));
 		}
 		it2->second->add_neighbor(it->to, it->weight);
+		auto it3 = this->nodes.find(it->to);
+		if(it3 == this->nodes.end()) {
+			throw A_star_exception("Node not found for id "+std::to_string(it->to));
+		}
+		it3->second->add_neighbor(it->from, it->weight);
 	}
 }
 
@@ -23,6 +28,14 @@ Graph::~Graph() {
 	for(auto it=this->nodes.begin(); it!=this->nodes.end(); ++it) {
 		delete it->second;
 	}
+}
+
+Node *Graph::getNode(int id) const {
+	auto it = this->nodes.find(id);
+	if(it == this->nodes.end()) {
+		throw A_star_exception("Node not found for id "+std::to_string(id));
+	}
+	return it->second;
 }
 
 float Graph::get_cost(int from, int to) const {

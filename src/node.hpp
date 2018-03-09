@@ -18,7 +18,10 @@ namespace a_star {
 		float getX() const;
 		float getY() const;
 		
+		string to_string() const;
+		
 		bool operator== (Node &n) const;
+		bool operator!= (Node &n) const;
 		
 	private:
 		int id;

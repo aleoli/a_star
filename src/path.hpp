@@ -9,6 +9,9 @@
 using a_star::Graph;
 using a_star::Node;
 
+#include <deque>
+using std::deque;
+
 namespace a_star {
 	
 	class Path {
@@ -17,8 +20,12 @@ namespace a_star {
 		Path(Graph *graph, Node *start, Node *goal);
 		~Path();
 		
+		vector<Node *> get() const;
+		
 	private:
 		static float heuristic(Node *a, Node *b);
+		
+		deque<Node *> path;
 		
 		typedef struct {
 			Node *node;

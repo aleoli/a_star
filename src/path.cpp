@@ -10,33 +10,51 @@ Path::Path(Graph *graph, Node *start, Node *goal) {
 	pn.node = start;
 	pn.priority = 0;
 	frontier.push(pn);
-	map<Node *, Node *> came_from;
-	came_from[start] = start;
-	map<Node *, float> cost_so_far;
-	cost_so_far[start] = 0;
+	map<int, int> came_from;
+	came_from[start->getId()] = start->getId();
+	map<int, float> cost_so_far;
+	cost_so_far[start->getId()] = 0;
 	
+	bool found = false;
 	while(!frontier.empty()) {
 		Priority_Node current = frontier.top();
 		if(*(current.node) == *goal) {
+			found = true;
 			break;
 		}
 		for(Node *next : graph->get_neighbors(current.node->getId())) {
-			float new_cost = cost_so_far[current.node] + graph->get_cost(current.node->getId(), next->getId());
-			if(cost_so_far.find(next) == cost_so_far.end() || new_cost < cost_so_far[next]) {
-				cost_so_far[next] = new_cost;
+			float new_cost = cost_so_far[current.node->getId()] + graph->get_cost(current.node->getId(), next->getId());
+			if(cost_so_far.find(next->getId()) == cost_so_far.end() || new_cost < cost_so_far[next->getId()]) {
+				cost_so_far[next->getId()] = new_cost;
 				Priority_Node pn;
 				pn.node = next;
 				pn.priority = new_cost + heuristic(next, goal);
 				frontier.push(pn);
-				came_from[next] = current.node;
+				came_from[next->getId()] = current.node->getId();
 			}
 		}
 		frontier.pop();
+	}
+	if(found) {
+		auto it = came_from.find(goal->getId());
+		this->path.push_front(goal);
+		while(it != came_from.end() && it->second != start->getId()) {
+			this->path.push_front(graph->getNode(it->second));
+			it = came_from.find(it->second);
+		}
 	}
 }
 
 Path::~Path() {
 	
+}
+
+vector<Node *> Path::get() const {
+	vector<Node *> res;
+	for(auto it=this->path.begin(); it!=this->path.end(); ++it) {
+		res.push_back(*it);
+	}
+	return res;
 }
 
 float Path::heuristic(Node *a, Node *b) {
