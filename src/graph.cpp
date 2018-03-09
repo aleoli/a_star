@@ -6,6 +6,9 @@ using std::pair;
 #include "a_star_exception.hpp"
 using a_star::A_star_exception;
 
+#include <fstream>
+using std::ifstream;
+
 Graph::Graph(vector<Node *> nodes, vector<Link> links) {
 	for(auto it=nodes.begin(); it!=nodes.end(); ++it) {
 		this->nodes.insert(pair<int, Node *>((*it)->getId(), *it));
@@ -22,6 +25,37 @@ Graph::Graph(vector<Node *> nodes, vector<Link> links) {
 		}
 		it3->second->add_neighbor(it->from, it->weight);
 	}
+}
+
+Graph::Graph(string nodes, string links) {
+	ifstream f(nodes);
+	int id;
+	float cost;
+	float x, y;
+	while(f >> id >> cost >> x >> y) {
+		Point p;
+		p.x = x;
+		p.y = y;
+		this->nodes.insert(pair<int, Node *>(id, new Node(id, cost, p)));
+	}
+	f.close();
+	
+	ifstream f2(links);
+	int from, to;
+	float weight;
+	while(f2 >> from >> to >> weight) {
+		auto it = this->nodes.find(from);
+		if(it == this->nodes.end()) {
+			throw A_star_exception("Node not found for id "+std::to_string(from));
+		}
+		it->second->add_neighbor(to, weight);
+		auto it2 = this->nodes.find(to);
+		if(it2 == this->nodes.end()) {
+			throw A_star_exception("Node not found for id "+std::to_string(to));
+		}
+		it2->second->add_neighbor(from, weight);
+	}
+	f2.close();
 }
 
 Graph::~Graph() {

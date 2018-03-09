@@ -1,5 +1,5 @@
-#define cols 5
-#define rows 5
+#define cols 3
+#define rows 3
 
 #include <iostream>
 
@@ -11,7 +11,7 @@ using std::endl;
 using namespace a_star;
 
 int main(int argc, char *argv[]) {
-	vector<Node *> nodes;
+	/*vector<Node *> nodes;
 	vector<Link> links;
 	
 	int id=0;
@@ -42,7 +42,9 @@ int main(int argc, char *argv[]) {
 	}
 	cout << endl;
 	
-	Graph graph(nodes, links);
+	Graph graph(nodes, links);*/
+	
+	Graph graph("nodes.txt", "links.txt");
 	
 	while(true) {
 		try {

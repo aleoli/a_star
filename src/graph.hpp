@@ -12,6 +12,7 @@ namespace a_star {
 	
 	public:
 		Graph(vector<Node *> nodes, vector<Link> links);
+		Graph(string nodes, string links);
 		~Graph();
 		
 		Node *getNode(int id) const;
