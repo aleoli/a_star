@@ -19,7 +19,7 @@ namespace a_star {
 	} Point;
 	
 	typedef struct {
-		int to;
+		unsigned long to;
 		float weight;
 	} Connection;
 	
