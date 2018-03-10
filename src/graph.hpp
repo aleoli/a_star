@@ -24,6 +24,7 @@ namespace a_star {
         static void add_back_links(Graph *g, vector<Link> links);
         
 		map<unsigned long, Node *> nodes;
+        float epsilon = 0.1;
 	
 	};
 	

@@ -83,7 +83,7 @@ Node *Graph::getNode(unsigned long id) const {
 
 Node *Graph::getNode(float x, float y) const {
 	for(auto it=this->nodes.begin(); it!=this->nodes.end(); ++it) {
-		if(it->second->getX() == x && it->second->getY() == y) {
+		if(it->second->getX()-this->epsilon <= x && it->second->getX()+this->epsilon >= x && it->second->getY()-this->epsilon <= y && it->second->getY()+this->epsilon >= y) {
 			return it->second;
 		}
 	}
