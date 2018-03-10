@@ -1,6 +1,8 @@
 #include "path.hpp"
 using a_star::Path;
 
+#include <cmath>
+
 #include <queue>
 using std::priority_queue;
 
@@ -62,7 +64,7 @@ vector<Node *> Path::get() const {
 }
 
 float Path::heuristic(Node *a, Node *b) {
-	return std::abs(a->getX() - b->getX()) + std::abs(a->getY() - b->getY());
+	return abs(a->getX() - b->getX()) + abs(a->getY() - b->getY());
 }
 
 Path::Priority_Node_Comparator::Priority_Node_Comparator(bool reverse) {
