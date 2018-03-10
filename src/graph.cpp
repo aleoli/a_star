@@ -72,6 +72,15 @@ Node *Graph::getNode(int id) const {
 	return it->second;
 }
 
+Node *Graph::getNode(float x, float y) const {
+	for(auto it=this->nodes.begin(); it!=this->nodes.end(); ++it) {
+		if(it->second->getX() == x && it->second->getY() == y) {
+			return it->second;
+		}
+	}
+	throw A_star_exception("Node not found for (x: "+std::to_string(x)+", y: "+std::to_string(y)+")");
+}
+
 float Graph::get_cost(int from, int to) const {
 	auto it = this->nodes.find(from);
 	if(it == this->nodes.end()) {

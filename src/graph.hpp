@@ -16,6 +16,7 @@ namespace a_star {
 		~Graph();
 		
 		Node *getNode(int id) const;
+		Node *getNode(float x, float y) const;
 		float get_cost(int from, int to) const;
 		vector<Node *> get_neighbors(int node_id);
 		
