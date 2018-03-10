@@ -2,7 +2,7 @@
 using a_star::Node;
 using a_star::Connection;
 
-Node::Node(int id, float cost, Point position, Cross_t crossable) {
+Node::Node(unsigned long id, float cost, Point position, Cross_t crossable) {
 	this->id = id;
 	this->cost = cost;
 	this->position = position;
@@ -24,7 +24,7 @@ void Node::add_neighbor(int node_id, float weight) {
 	this->neighbors.push_back(con);
 }
 
-int Node::getId() const {
+unsigned long Node::getId() const {
 	return this->id;
 }
 

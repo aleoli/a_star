@@ -7,41 +7,40 @@ using std::pair;
 using a_star::A_star_exception;
 
 #include <fstream>
+#include <thread>
 using std::ifstream;
+using std::thread;
 
 Graph::Graph(vector<Node *> nodes, vector<Link> links) {
 	for(auto it=nodes.begin(); it!=nodes.end(); ++it) {
 		this->nodes.insert(pair<int, Node *>((*it)->getId(), *it));
 	}
+    thread back_links(Graph::add_back_links, this, links);
 	for(auto it=links.begin(); it!=links.end(); ++it) {
 		auto it2 = this->nodes.find(it->from);
 		if(it2 == this->nodes.end()) {
 			throw A_star_exception("Node not found for id "+std::to_string(it->from));
 		}
 		it2->second->add_neighbor(it->to, it->weight);
-		auto it3 = this->nodes.find(it->to);
-		if(it3 == this->nodes.end()) {
-			throw A_star_exception("Node not found for id "+std::to_string(it->to));
-		}
-		it3->second->add_neighbor(it->from, it->weight);
 	}
+    back_links.join();
 }
 
 Graph::Graph(string nodes, string links) {
 	ifstream f(nodes);
-	int id;
+	unsigned long id;
 	float cost;
 	float x, y;
 	while(f >> id >> cost >> x >> y) {
 		Point p;
 		p.x = x;
 		p.y = y;
-		this->nodes.insert(pair<int, Node *>(id, new Node(id, cost, p)));
+		this->nodes.insert(pair<unsigned long, Node *>(id, new Node(id, cost, p)));
 	}
 	f.close();
 	
 	ifstream f2(links);
-	int from, to;
+	unsigned long from, to;
 	float weight;
 	while(f2 >> from >> to >> weight) {
 		auto it = this->nodes.find(from);
@@ -64,7 +63,17 @@ Graph::~Graph() {
 	}
 }
 
-Node *Graph::getNode(int id) const {
+void Graph::add_back_links(Graph *g, vector<Link> links) {
+    for(auto it=links.begin(); it!=links.end(); ++it) {
+        auto it2 = g->nodes.find(it->to);
+        if(it2 == g->nodes.end()) {
+            throw A_star_exception("Node not found for id "+std::to_string(it->to));
+        }
+        it2->second->add_neighbor(it->from, it->weight);
+    }
+}
+
+Node *Graph::getNode(unsigned long id) const {
 	auto it = this->nodes.find(id);
 	if(it == this->nodes.end()) {
 		throw A_star_exception("Node not found for id "+std::to_string(id));
@@ -81,7 +90,7 @@ Node *Graph::getNode(float x, float y) const {
 	throw A_star_exception("Node not found for (x: "+std::to_string(x)+", y: "+std::to_string(y)+")");
 }
 
-float Graph::get_cost(int from, int to) const {
+float Graph::get_cost(unsigned long from, unsigned long to) const {
 	auto it = this->nodes.find(from);
 	if(it == this->nodes.end()) {
 		throw A_star_exception("Node not found for id "+std::to_string(from));
@@ -95,7 +104,7 @@ float Graph::get_cost(int from, int to) const {
 	throw A_star_exception("Node "+std::to_string(from)+" is not connected to node "+std::to_string(to));
 }
 
-vector<Node *> Graph::get_neighbors(int node_id) {
+vector<Node *> Graph::get_neighbors(unsigned long node_id) {
 	auto it = this->nodes.find(node_id);
 	if(it == this->nodes.end()) {
 		throw A_star_exception("Node not found for id "+std::to_string(node_id));

@@ -12,9 +12,9 @@ Path::Path(Graph *graph, Node *start, Node *goal) {
 	pn.node = start;
 	pn.priority = 0;
 	frontier.push(pn);
-	map<int, int> came_from;
+	map<unsigned long, unsigned long> came_from;
 	came_from[start->getId()] = start->getId();
-	map<int, float> cost_so_far;
+	map<unsigned long, float> cost_so_far;
 	cost_so_far[start->getId()] = 0;
 	
 	bool found = false;

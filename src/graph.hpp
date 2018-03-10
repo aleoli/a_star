@@ -15,13 +15,15 @@ namespace a_star {
 		Graph(string nodes, string links);
 		~Graph();
 		
-		Node *getNode(int id) const;
+		Node *getNode(unsigned long id) const;
 		Node *getNode(float x, float y) const;
-		float get_cost(int from, int to) const;
-		vector<Node *> get_neighbors(int node_id);
+		float get_cost(unsigned long from, unsigned long to) const;
+		vector<Node *> get_neighbors(unsigned long node_id);
 		
 	private:
-		map<int, Node *> nodes;
+        static void add_back_links(Graph *g, vector<Link> links);
+        
+		map<unsigned long, Node *> nodes;
 	
 	};
 	

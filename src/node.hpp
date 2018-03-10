@@ -12,13 +12,13 @@ namespace a_star {
 			CROSSABLE, TEMP_NOT_CROSSABLE, NOT_CROSSABLE
 		} Cross_t;
 		
-		Node(int id, float cost, Point position, Cross_t crossable = CROSSABLE);
+		Node(unsigned long id, float cost, Point position, Cross_t crossable = CROSSABLE);
 		~Node();
 		
 		void add_neighbor(int node_id, float weight);
 		vector<Connection> get_neighbors() const;
 		
-		int getId() const;
+        unsigned long getId() const;
 		
 		float getCost() const;
 		
@@ -34,7 +34,7 @@ namespace a_star {
 		bool operator!= (Node &n) const;
 		
 	private:
-		int id;
+		unsigned long id;
 		float cost;
 		Point position;
 		vector<Connection> neighbors;
