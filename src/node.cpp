@@ -28,6 +28,10 @@ int Node::getId() const {
 	return this->id;
 }
 
+float Node::getCost() const {
+	return this->cost;
+}
+
 float Node::getX() const {
 	return this->position.x;
 }

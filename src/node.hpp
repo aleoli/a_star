@@ -20,6 +20,8 @@ namespace a_star {
 		
 		int getId() const;
 		
+		float getCost() const;
+		
 		float getX() const;
 		float getY() const;
 		
