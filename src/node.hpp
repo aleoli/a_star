@@ -8,15 +8,23 @@ namespace a_star {
 	class Node {
 	
 	public:
-		Node(int id, float cost, Point position);
+		typedef enum {
+			CROSSABLE, TEMP_NOT_CROSSABLE, NOT_CROSSABLE
+		} Cross_t;
+		
+		Node(int id, float cost, Point position, Cross_t crossable = CROSSABLE);
 		~Node();
 		
 		void add_neighbor(int node_id, float weight);
 		vector<Connection> get_neighbors() const;
 		
 		int getId() const;
+		
 		float getX() const;
 		float getY() const;
+		
+		Cross_t get_crossable() const;
+		void crossable(Cross_t new_val);
 		
 		string to_string() const;
 		
@@ -28,6 +36,7 @@ namespace a_star {
 		float cost;
 		Point position;
 		vector<Connection> neighbors;
+		Cross_t _crossable;
 		
 	};
 	

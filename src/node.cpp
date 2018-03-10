@@ -2,10 +2,11 @@
 using a_star::Node;
 using a_star::Connection;
 
-Node::Node(int id, float cost, Point position) {
+Node::Node(int id, float cost, Point position, Cross_t crossable) {
 	this->id = id;
 	this->cost = cost;
 	this->position = position;
+	this->_crossable = crossable;
 }
 
 Node::~Node() {
@@ -37,6 +38,14 @@ float Node::getY() const {
 
 string Node::to_string() const {
 	return "id: "+std::to_string(this->id)+"\tx: "+std::to_string(this->position.x)+"\ty: "+std::to_string(this->position.y);
+}
+
+Node::Cross_t Node::get_crossable() const {
+	return this->_crossable;
+}
+
+void Node::crossable(Cross_t new_val) {
+	this->_crossable = new_val;
 }
 
 bool Node::operator== (Node &n) const {

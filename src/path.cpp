@@ -23,6 +23,10 @@ Path::Path(Graph *graph, Node *start, Node *goal) {
 			break;
 		}
 		for(Node *next : graph->get_neighbors(current.node->getId())) {
+			Node::Cross_t cross_t = next->get_crossable();
+			if(cross_t == Node::Cross_t::NOT_CROSSABLE || (*(current.node) == *start && cross_t == Node::Cross_t::TEMP_NOT_CROSSABLE)) {
+				continue;
+			}
 			float new_cost = cost_so_far[current.node->getId()] + graph->get_cost(current.node->getId(), next->getId());
 			if(cost_so_far.find(next->getId()) == cost_so_far.end() || new_cost < cost_so_far[next->getId()]) {
 				cost_so_far[next->getId()] = new_cost;
