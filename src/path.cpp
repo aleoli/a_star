@@ -29,12 +29,12 @@ Path::Path(Graph *graph, Node *start, Node *goal) {
 			if(cross_t == Node::Cross_t::NOT_CROSSABLE || (*(current.node) == *start && cross_t == Node::Cross_t::TEMP_NOT_CROSSABLE)) {
 				continue;
 			}
-			float new_cost = cost_so_far[current.node->getId()] + graph->get_cost(current.node->getId(), next->getId());
+			float new_cost = cost_so_far[current.node->getId()] + graph->get_cost(current.node->getId(), next->getId()) + this->heuristic(next, goal);
 			if(cost_so_far.find(next->getId()) == cost_so_far.end() || new_cost < cost_so_far[next->getId()]) {
 				cost_so_far[next->getId()] = new_cost;
 				Priority_Node pn;
 				pn.node = next;
-				pn.priority = new_cost + heuristic(next, goal);
+				pn.priority = new_cost;
 				frontier.push(pn);
 				came_from[next->getId()] = current.node->getId();
 			}
