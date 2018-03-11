@@ -19,6 +19,7 @@ namespace a_star {
         void addNode(Node *node);
         void addLink(Link link, bool also_back = true);
 		Node *getNode(unsigned long id) const;
+        Node *getNode(Point p) const;
 		Node *getNode(float x, float y) const;
 		float get_cost(unsigned long from, unsigned long to) const;
 		vector<Node *> get_neighbors(unsigned long node_id);
@@ -27,8 +28,7 @@ namespace a_star {
         static void add_back_links(Graph *g, vector<Link> links);
         
 		map<unsigned long, Node *> nodes;
-        //map<Point, Node *> nodes_p;
-        float epsilon = 0.1;
+        map<Point, Node *> nodes_p;
 	
 	};
 	

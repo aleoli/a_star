@@ -19,17 +19,11 @@ Graph::Graph() {
 
 Graph::Graph(vector<Node *> nodes, vector<Link> links) {
 	for(auto it=nodes.begin(); it!=nodes.end(); ++it) {
-		this->nodes.insert(pair<int, Node *>((*it)->getId(), *it));
+        this->addNode(*it);
 	}
-    thread back_links(Graph::add_back_links, this, links);
 	for(auto it=links.begin(); it!=links.end(); ++it) {
-		auto it2 = this->nodes.find(it->from);
-		if(it2 == this->nodes.end()) {
-			throw A_star_exception("Node not found for id "+std::to_string(it->from));
-		}
-		it2->second->add_neighbor(it->to, it->weight);
+        this->addLink(*it, true);
 	}
-    back_links.join();
 }
 
 Graph::Graph(string nodes, string links) {
@@ -41,8 +35,7 @@ Graph::Graph(string nodes, string links) {
 		Point p;
 		p.x = x;
 		p.y = y;
-        this->nodes.insert(pair<unsigned long, Node *>(id, new Node(id, cost, p)));
-        //this->addNode(new Node(id, cost, p));
+        this->addNode(new Node(id, cost, p));
 	}
 	f.close();
 	
@@ -50,21 +43,11 @@ Graph::Graph(string nodes, string links) {
 	unsigned long from, to;
 	float weight;
 	while(f2 >> from >> to >> weight) {
-        auto it = this->nodes.find(from);
-        if(it == this->nodes.end()) {
-            throw A_star_exception("Node not found for id "+std::to_string(from));
-        }
-        it->second->add_neighbor(to, weight);
-        auto it2 = this->nodes.find(to);
-        if(it2 == this->nodes.end()) {
-            throw A_star_exception("Node not found for id "+std::to_string(to));
-        }
-        it2->second->add_neighbor(from, weight);
-        /*Link l;
+        Link l;
         l.from = from;
         l.to = to;
         l.weight = weight;
-        this->addLink(l, true);*/
+        this->addLink(l, true);
 	}
 	f2.close();
 }
@@ -77,7 +60,7 @@ Graph::~Graph() {
 
 void Graph::addNode(Node *node) {
     this->nodes.insert(pair<unsigned long, Node *>(node->getId(), node));
-    //this->nodes_p.insert(pair<Point, Node *>(node->getPosition(), node));
+    this->nodes_p.insert(pair<Point, Node *>(node->getPosition(), node));
 }
 
 void Graph::addLink(Link link, bool also_back) {
@@ -113,13 +96,19 @@ Node *Graph::getNode(unsigned long id) const {
 	return it->second;
 }
 
+Node *Graph::getNode(Point p) const {
+    auto it = this->nodes_p.find(p);
+    if(it == this->nodes_p.end()) {
+        throw A_star_exception("Node not found for position (x: "+std::to_string(p.x)+", y: "+std::to_string(p.y)+")");
+    }
+    return it->second;
+}
+
 Node *Graph::getNode(float x, float y) const {
-	for(auto it=this->nodes.begin(); it!=this->nodes.end(); ++it) {
-		if(it->second->getX()-this->epsilon <= x && it->second->getX()+this->epsilon >= x && it->second->getY()-this->epsilon <= y && it->second->getY()+this->epsilon >= y) {
-			return it->second;
-		}
-	}
-	throw A_star_exception("Node not found for (x: "+std::to_string(x)+", y: "+std::to_string(y)+")");
+    Point p;
+    p.x = x;
+    p.y = y;
+    return this->getNode(p);
 }
 
 float Graph::get_cost(unsigned long from, unsigned long to) const {

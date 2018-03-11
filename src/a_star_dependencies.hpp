@@ -13,10 +13,30 @@ using std::map;
 
 namespace a_star {
 	
-	typedef struct {
+    typedef struct Point Point;
+	struct Point {
 		float x;
 		float y;
-	} Point;
+        
+        bool operator==(const Point& o) const {
+            return this->x == o.x && this->y == o.y;
+        }
+        bool operator!=(const Point& o) const {
+            return !(*this == o);
+        }
+        bool operator>(const Point& o) const {
+            if(this->x > o.x) {
+                return true;
+            }
+            return this->y > o.y;
+        }
+        bool operator<(const Point& o) const {
+            if(o.x > this->x) {
+                return true;
+            }
+            return o.y > this->y;
+        }
+	};
 	
 	typedef struct {
 		unsigned long to;
@@ -28,25 +48,6 @@ namespace a_star {
 		int to;
 		float weight;
 	} Link;
-    
-    /*bool operator==(const Point& lhs, const Point& rhs) {
-        return lhs.x == rhs.x && lhs.y == rhs.y;
-    }
-    bool operator!=(const Point& lhs, const Point& rhs) {
-        return !(lhs == rhs);
-    }
-    bool operator>(const Point& lhs, const Point& rhs) {
-        if(lhs.x > rhs.x) {
-            return true;
-        }
-        return lhs.y > rhs.y;
-    }
-    bool operator<(const Point& lhs, const Point& rhs) {
-        if(rhs.x > lhs.x) {
-            return true;
-        }
-        return rhs.y > lhs.y;
-    }*/
 	
 	class Node;
 	class Graph;
