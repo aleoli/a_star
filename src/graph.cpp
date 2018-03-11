@@ -6,10 +6,16 @@ using std::pair;
 #include "a_star_exception.hpp"
 using a_star::A_star_exception;
 
+using a_star::Point;
+
 #include <fstream>
 #include <thread>
 using std::ifstream;
 using std::thread;
+
+Graph::Graph() {
+    
+}
 
 Graph::Graph(vector<Node *> nodes, vector<Link> links) {
 	for(auto it=nodes.begin(); it!=nodes.end(); ++it) {
@@ -35,7 +41,8 @@ Graph::Graph(string nodes, string links) {
 		Point p;
 		p.x = x;
 		p.y = y;
-		this->nodes.insert(pair<unsigned long, Node *>(id, new Node(id, cost, p)));
+        this->nodes.insert(pair<unsigned long, Node *>(id, new Node(id, cost, p)));
+        //this->addNode(new Node(id, cost, p));
 	}
 	f.close();
 	
@@ -43,16 +50,21 @@ Graph::Graph(string nodes, string links) {
 	unsigned long from, to;
 	float weight;
 	while(f2 >> from >> to >> weight) {
-		auto it = this->nodes.find(from);
-		if(it == this->nodes.end()) {
-			throw A_star_exception("Node not found for id "+std::to_string(from));
-		}
-		it->second->add_neighbor(to, weight);
-		auto it2 = this->nodes.find(to);
-		if(it2 == this->nodes.end()) {
-			throw A_star_exception("Node not found for id "+std::to_string(to));
-		}
-		it2->second->add_neighbor(from, weight);
+        auto it = this->nodes.find(from);
+        if(it == this->nodes.end()) {
+            throw A_star_exception("Node not found for id "+std::to_string(from));
+        }
+        it->second->add_neighbor(to, weight);
+        auto it2 = this->nodes.find(to);
+        if(it2 == this->nodes.end()) {
+            throw A_star_exception("Node not found for id "+std::to_string(to));
+        }
+        it2->second->add_neighbor(from, weight);
+        /*Link l;
+        l.from = from;
+        l.to = to;
+        l.weight = weight;
+        this->addLink(l, true);*/
 	}
 	f2.close();
 }
@@ -61,6 +73,26 @@ Graph::~Graph() {
 	for(auto it=this->nodes.begin(); it!=this->nodes.end(); ++it) {
 		delete it->second;
 	}
+}
+
+void Graph::addNode(Node *node) {
+    this->nodes.insert(pair<unsigned long, Node *>(node->getId(), node));
+    //this->nodes_p.insert(pair<Point, Node *>(node->getPosition(), node));
+}
+
+void Graph::addLink(Link link, bool also_back) {
+    auto it = this->nodes.find(link.from);
+    if(it == this->nodes.end()) {
+        throw A_star_exception("Node not found for id "+std::to_string(link.from));
+    }
+    it->second->add_neighbor(link.to, link.weight);
+    if(also_back) {
+        it = this->nodes.find(link.to);
+        if(it == this->nodes.end()) {
+            throw A_star_exception("Node not found for id "+std::to_string(link.to));
+        }
+        it->second->add_neighbor(link.from, link.weight);
+    }
 }
 
 void Graph::add_back_links(Graph *g, vector<Link> links) {

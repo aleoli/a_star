@@ -22,6 +22,7 @@ namespace a_star {
 		
 		float getCost() const;
 		
+        Point getPosition() const;
 		float getX() const;
 		float getY() const;
 		

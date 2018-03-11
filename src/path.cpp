@@ -20,6 +20,7 @@ Path::Path(Graph *graph, Node *start, Node *goal) {
 	bool found = false;
 	while(!frontier.empty()) {
 		Priority_Node current = frontier.top();
+        frontier.pop();
 		if(*(current.node) == *goal) {
 			found = true;
 			break;
@@ -39,7 +40,6 @@ Path::Path(Graph *graph, Node *start, Node *goal) {
 				came_from[next->getId()] = current.node->getId();
 			}
 		}
-		frontier.pop();
 	}
 	if(found) {
 		auto it = came_from.find(goal->getId());
@@ -65,6 +65,7 @@ vector<Node *> Path::get() const {
 
 float Path::heuristic(Node *a, Node *b) {
 	return abs(a->getX() - b->getX()) + abs(a->getY() - b->getY());
+    //return sqrt((a->getX() - b->getX())*(a->getX() - b->getX()) + (a->getY() - b->getY())*(a->getY() - b->getY()));
 }
 
 Path::Priority_Node_Comparator::Priority_Node_Comparator(bool reverse) {
@@ -72,5 +73,5 @@ Path::Priority_Node_Comparator::Priority_Node_Comparator(bool reverse) {
 }
 
 bool Path::Priority_Node_Comparator::operator() (const Priority_Node& lhs, const Priority_Node&rhs) const {
-	return (this->reverse ? lhs.priority>rhs.priority : lhs.priority<rhs.priority);
+	return (this->reverse ? lhs.priority<rhs.priority : lhs.priority>rhs.priority);
 }

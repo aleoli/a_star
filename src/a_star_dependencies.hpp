@@ -28,6 +28,25 @@ namespace a_star {
 		int to;
 		float weight;
 	} Link;
+    
+    /*bool operator==(const Point& lhs, const Point& rhs) {
+        return lhs.x == rhs.x && lhs.y == rhs.y;
+    }
+    bool operator!=(const Point& lhs, const Point& rhs) {
+        return !(lhs == rhs);
+    }
+    bool operator>(const Point& lhs, const Point& rhs) {
+        if(lhs.x > rhs.x) {
+            return true;
+        }
+        return lhs.y > rhs.y;
+    }
+    bool operator<(const Point& lhs, const Point& rhs) {
+        if(rhs.x > lhs.x) {
+            return true;
+        }
+        return rhs.y > lhs.y;
+    }*/
 	
 	class Node;
 	class Graph;

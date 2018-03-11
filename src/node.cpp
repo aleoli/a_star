@@ -1,6 +1,7 @@
 #include "node.hpp"
 using a_star::Node;
 using a_star::Connection;
+using a_star::Point;
 
 Node::Node(unsigned long id, float cost, Point position, Cross_t crossable) {
 	this->id = id;
@@ -30,6 +31,10 @@ unsigned long Node::getId() const {
 
 float Node::getCost() const {
 	return this->cost;
+}
+
+Point Node::getPosition() const {
+    return this->position;
 }
 
 float Node::getX() const {
