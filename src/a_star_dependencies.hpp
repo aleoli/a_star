@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <cmath>
 
 using std::cout;
 using std::endl;
@@ -19,22 +20,16 @@ namespace a_star {
 		float y;
         
         bool operator==(const Point& o) const {
-            return this->x == o.x && this->y == o.y;
+            return abs(this->x - o.x)<0.1 && abs(this->y - o.y)<0.1;
         }
         bool operator!=(const Point& o) const {
             return !(*this == o);
         }
         bool operator>(const Point& o) const {
-            if(this->x > o.x) {
-                return true;
-            }
-            return this->y > o.y;
+            return this->x > o.x || (this->x == o.x && this->y > o.y);
         }
         bool operator<(const Point& o) const {
-            if(o.x > this->x) {
-                return true;
-            }
-            return o.y > this->y;
+            return this->x < o.x || (this->x == o.x && this->y < o.y);
         }
 	};
 	
